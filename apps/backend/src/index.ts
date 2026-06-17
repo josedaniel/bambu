@@ -2,14 +2,32 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { serve } from "@hono/node-server";
 import { auth } from "./auth.ts";
+import { fileURLToPath } from "url";
+import { dirname, resolve } from "path";
+
+if (!process.env.PORT) {
+  try {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    process.loadEnvFile(resolve(__dirname, "../../.env"));
+  } catch {}
+}
 
 const app = new Hono();
+
+const trustedOrigins = process.env.TRUSTED_ORIGINS
+  ? process.env.TRUSTED_ORIGINS.split(",")
+  : ["http://localhost:5173", "http://localhost:5174"];
 
 // Configuración de CORS
 app.use(
   "*",
   cors({
-    origin: (origin) => origin || "http://localhost:5173", // Ajusta al puerto de tu frontend
+    origin: (origin) => {
+      if (!origin) return trustedOrigins[0];
+      if (trustedOrigins.includes(origin)) return origin;
+      return trustedOrigins[0];
+    },
     allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["POST", "GET", "OPTIONS"],
     exposeHeaders: ["Content-Length", "X-Kuma-Revision"],

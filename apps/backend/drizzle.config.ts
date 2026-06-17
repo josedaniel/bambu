@@ -1,4 +1,9 @@
 import { defineConfig } from "drizzle-kit";
+import { resolve } from "path";
+
+try {
+  process.loadEnvFile(resolve(process.cwd(), "../../.env"));
+} catch {}
 
 export default defineConfig({
   schema: "./src/db/schema.ts",
