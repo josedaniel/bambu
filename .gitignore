@@ -1,0 +1,52 @@
+# Node and Build Outputs
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# SQLite Database & Custom Data Folder
+/data/
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite-journal
+
+# Environment Secrets
+.env
+.env.local
+.env.*.local
+.env.production
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Staging Inbox (contents ignored, folder structure kept)
+inbox/*
+!inbox/.gitkeep
+
+# OS & Editor Files
+.DS_Store
+Thumbs.db
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# AI Agents & Worktrees
+.claude/
+.gemini/
+.antigravity/
+.antigravitycli/
+.vite-hooks/
