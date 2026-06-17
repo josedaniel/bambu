@@ -4,11 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "vp dev",
     "build": "vp build",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "tsx src/db/migrate.ts",
-    "db:push": "drizzle-kit push"
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "catalog:",
@@ -19,10 +20,12 @@
     "hono": "catalog:"
   },
   "devDependencies": {
+    "@hono/vite-dev-server": "catalog:",
     "@types/node": "catalog:",
     "drizzle-kit": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:",
+    "vite-plugin-killer-instincts": "catalog:",
     "vite-plus": "catalog:"
   }
 }

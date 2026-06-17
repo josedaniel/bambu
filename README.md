@@ -50,28 +50,38 @@ This registers dependencies using **catalog mode** defined in the root `pnpm-wor
 
 ### 2. Database Setup & Migrations
 
-The Hono backend utilizes an SQLite database stored locally at `data/db/bambu.db`.
+The Hono backend utilizes an SQLite database stored locally at `data/db/bambu.db`. Interactions with Drizzle ORM are managed via package scripts in the backend workspace:
 
-1. Generate the SQLite migration files:
+1. **Generate migrations** (scans your schema and creates SQL migration files):
    ```bash
-   pnpm --filter backend drizzle-kit generate
+   pnpm --filter @bambu/backend db:generate
    ```
-2. Apply migrations to the local database:
+2. **Apply migrations** (runs all pending SQL migrations against the database):
    ```bash
-   pnpm --filter backend drizzle-kit migrate
+   pnpm --filter @bambu/backend db:migrate
+   ```
+3. **Push schema changes** (syncs the schema directly to the database without generating files, ideal for rapid prototyping):
+   ```bash
+   pnpm --filter @bambu/backend db:push
+   ```
+4. **Open Drizzle Studio** (web-based visual explorer for your database):
+   ```bash
+   pnpm --filter @bambu/backend db:studio
    ```
 
 ### 3. Running Development Environment
 
-To start all components in parallel (backend, frontend, and design-system in watch mode):
+To start all components in parallel (backend Hono API on port `3000`, frontend Vue client on port `5173`, and design-system in watch mode):
 
 ```bash
 vp run dev
 ```
 
-- **Frontend**: [http://localhost:5173](http://localhost:5173)
-- **Backend Hono API**: [http://localhost:3000](http://localhost:3000)
-- **Design System**: Live rebuilds on change.
+- **Frontend**: [http://localhost:5173](http://localhost:5173) (running on Vite dev server)
+- **Backend Hono API**: [http://localhost:3000](http://localhost:3000) (running on Hono Vite dev server)
+- **Design System**: Rebuilds automatically on change.
+
+_Note: Both development servers are configured with `vite-plugin-killer-instincts` which automatically frees up their respective ports (`5173` and `3000`) if they are already in use when booting the dev environment._
 
 ---
 

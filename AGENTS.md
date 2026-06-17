@@ -68,16 +68,29 @@ Tailwind CSS v4 is configured as a CSS-first pipeline. AI agents must follow the
 ## 🗄️ Database & Schema Workflows
 
 - **Database Engine**: Local SQLite database stored at `data/db/bambu.db`.
-- **Drizzle ORM**: Scheme is defined in `apps/backend/src/db/schema.ts`.
+- **Drizzle ORM**: Schema is defined in `apps/backend/src/db/schema.ts`.
 - **Modifications**: If you modify `schema.ts`, you must run the following commands to generate and apply migrations:
 
   ```bash
-  # Generate migration SQL
-  pnpm --filter backend drizzle-kit generate
+  # Generate migration SQL (scans schema and outputs SQL files)
+  pnpm --filter @bambu/backend db:generate
 
-  # Apply migration SQL to data/db/bambu.db
-  pnpm --filter backend drizzle-kit migrate
+  # Apply migration SQL to local database (runs drizzle-kit migrate)
+  pnpm --filter @bambu/backend db:migrate
+
+  # Alternatively, push schema directly for rapid local testing without migrations
+  pnpm --filter @bambu/backend db:push
   ```
+
+---
+
+## ⚡ Development Servers & Port Management
+
+- **Vite Dev Servers**: Both `apps/frontend` and `apps/backend` run on Vite during development.
+  - Backend API runs Hono under `@hono/vite-dev-server` on port `3000`.
+  - Frontend runs Vue 3 on port `5173`.
+- **Process Port Locking**: Both development servers use `vite-plugin-killer-instincts`. If port `3000` or `5173` is occupied when starting development, the plugin kills the blocking process and starts up cleanly.
+- **Backend Entrypoint Execution**: If you need to run the Node server directly outside of Vite dev server (e.g. for testing production entrypoints), run `node dist/index.js` or `tsx src/index.ts`. The server script conditionally bypasses starting Node's HTTP listener when running inside Vite.
 
 ---
 

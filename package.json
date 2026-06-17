@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "ready": "vp fmt && vp lint && vp run test -r && vp run build -r",
-    "dev": "pnpm -r --parallel dev",
+    "dev": "concurrently -k -p \"[{name}]\" --names \"design-system,backend,frontend\" -c \"magenta.bold,cyan.bold,blue.bold\" \"pnpm --filter @bambu/design-system dev\" \"pnpm --filter @bambu/backend dev\" \"pnpm --filter frontend dev\"",
     "prepare": "vp config"
   },
   "devDependencies": {
+    "concurrently": "catalog:",
     "vite-plus": "catalog:"
   },
   "engines": {
